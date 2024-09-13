@@ -12,13 +12,11 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   oneofs: true,
 });
 
-// Load gRPC package
 const protoDescriptor = grpc.loadPackageDefinition(packageDefinition);
 const userProto = protoDescriptor.user as any;
 
-// Create gRPC client
 const client = new userProto.userService(
-  'localhost:50055', // gRPC server address
+  'localhost:50055', 
   grpc.credentials.createInsecure()
 );
 

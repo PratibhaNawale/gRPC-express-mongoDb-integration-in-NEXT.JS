@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 interface EditUserProps {
     handleClose: () => void;
     select: {
@@ -16,6 +17,7 @@ const EditUser: React.FC<EditUserProps> = ({ handleClose, select, getUser }) => 
     const [email, setEmail] = useState(select.email);
     const [password, setPassword] = useState(select.password);
     const [errors, setErrors] = useState<{ name?: string; email?: string; password?: string }>({});
+    const [showPassword, setShowPassword] = useState(false);
 
     const validate = () => {
         const newErrors: { name?: string; email?: string; password?: string } = {};
@@ -64,7 +66,9 @@ const EditUser: React.FC<EditUserProps> = ({ handleClose, select, getUser }) => 
         setPassword(e.target.value);
         if (errors.password) setErrors((prev) => ({ ...prev, password: undefined }));
     };
-
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
     return (
         <div className='open-sidebar'>
             <h5>Update User</h5>
@@ -87,13 +91,31 @@ const EditUser: React.FC<EditUserProps> = ({ handleClose, select, getUser }) => 
             />
             {errors.email && <div style={{ color: 'red' , fontSize:'14px'}}>{errors.email}</div>}
             <label>Password</label>
+            <div style={{ position: 'relative', width: '100%' }}>
             <input
-                type='text'
+                type={showPassword ? 'text' : 'password'} // Toggle between 'text' and 'password'
                 placeholder='Enter Password'
                 value={password}
                 onChange={handlePasswordChange}
-                style={{ borderColor: errors.password ? 'red' : undefined }}
+                style={{
+                    width: '100%', // Full width input
+                    paddingRight: '40px', // Space for the eye icon
+                    borderColor: errors.password ? 'red' : undefined,
+                }}
             />
+            <span
+                onClick={togglePasswordVisibility}
+                style={{
+                    position: 'absolute',
+                    right: '10px', // Align it to the right inside the input
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    cursor: 'pointer',
+                }}
+            >
+                <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+            </span>
+        </div>
             {errors.password && <div style={{ color: 'red',fontSize:'14px' }}>{errors.password}</div>}
             <div className='set-button'>
                 <button className='save-btn' onClick={handleUpdate}>

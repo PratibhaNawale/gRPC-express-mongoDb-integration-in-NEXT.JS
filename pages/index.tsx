@@ -152,7 +152,7 @@ function UserTable() {
                             <td>{index + 1}</td>
                             <td>{user.name}</td>
                             <td>{user.email}</td>
-                            <td>{user.password}</td>
+                            <td style={{ fontSize: '30px' }}>{'.'.repeat(user.password.length)}</td>
                             <td>
                                 <button onClick={() => handleEdit(user)} className='save-btn'>Edit</button>
                                 <button className='ml-3 delete-btn' onClick={() => confirmDelete(user.id)} >
